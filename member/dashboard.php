@@ -1,6 +1,6 @@
 <?php include('check.php');define("TITLE", "Dashboard"); 
 // include('../connection.php');
-session_start();
+
 $member_id =$_SESSION['username'];
 
 ?>
@@ -92,7 +92,7 @@ $member_id =$_SESSION['username'];
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Cow Milk supplying</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $cow_liter_month; ?> Liter's</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php if(!empty($cow_liter_month)){ echo $cow_liter_month;}else{ echo "-";} ?> Liter's</div>
                                         </div>
                                         <div class="col-auto"><span class="badge text-white bg-primary p-2">Month</span></div>
                                     </div>
@@ -105,7 +105,7 @@ $member_id =$_SESSION['username'];
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Buffalo Milk supplying</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php if($buffalo_liter_month!=""){ echo $buffalo_liter_month;}{ echo "-";} ?> Liter's</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php if($buffalo_liter_month!=""){ echo $buffalo_liter_month;}else{ echo "-";} ?> Liter's</div>
                                         </div>
                                         <div class="col-auto"><span class="badge text-white bg-primary p-2">Month</span></div>
                                     </div>

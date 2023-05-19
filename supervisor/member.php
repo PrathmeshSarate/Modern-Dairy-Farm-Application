@@ -79,8 +79,11 @@ $genrate_member_id = strtoupper(substr(md5(rand()), 0, 5));
                               window.location.href = myurl+'?refresh_page=true';</script>";
                     } else {
                         date_default_timezone_set('Asia/Kolkata');
-                        $sms_date = date('D d-M-Y');
-                        $sms_time = date('h:i:s A');
+                        
+                        $sms_date = formatMarathiDate(date('D d-M-Y'));;
+                        $sms_time = formatMarathiTime(date('h:i:s'));
+                        $phone2 = convertToMarathiNumber($phone);
+                        
                         // exit;
                         $message="श्री. दत्त सह. दूध व्याव. व कृषिपूरक सेवा संस्था,\nमर्या. , वाकरे, ता. करवीर, जि. कोल्हापूर \n\n\n";
                         $message.="*नोंदणी यशस्वी झाली, \nनोंदणीचे तपशील खाली दिले आहेत*\n";
@@ -88,8 +91,9 @@ $genrate_member_id = strtoupper(substr(md5(rand()), 0, 5));
                         $message.="\nवेळ :- $sms_time";
                         $message.="\n(Member ID)सभासद क्रमांक :- $member_id";
                         $message.="\nनाव :- $name";
-                        $message.="\n(Password)संकेतशब्द :- $phone";
+                        $message.="\n(Password)संकेतशब्द :- $phone2";
                         $message.="\n\n\nही माहिती संवेदनशील आहे, \nकोणाशीही उघड करू नका.";
+                        // echo $message;
                         // exit;
 
                     $message = [
@@ -109,6 +113,9 @@ $genrate_member_id = strtoupper(substr(md5(rand()), 0, 5));
                     curl_close($cURL);
 
                     $result = json_decode($response, true);
+                    // echo '<pre>';
+                    // print_r($result);
+                    // exit;
 
                     // do something with response
                     if($result['status']==200){

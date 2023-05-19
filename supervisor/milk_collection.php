@@ -56,21 +56,22 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
             <?php
             $current_time_min = date('H:i');
             if ($current_time_min >= "07:00" && $current_time_min <= "11:00") {
-                $time_slot = "Day";
+                $time_slot = "morning";
             } else if ($current_time_min >= "16:00" && $current_time_min <= "19:00") {
-                $time_slot = "Evening";
+                $time_slot = "evening";
             } else {
-                $time_slot = "-";
+                // $time_slot = "-";
+                $time_slot = "morning";
             }
 
 
 
-            if (isset($_POST['save_data']))
-            // if(isset($_POST['save_data']))
+        if (isset($_POST['save_data'])){
+            if(!empty($_POST['member_id']) && !empty($_POST['animal_type']) && !empty($_POST['liter']) && !empty($_POST['fat']) && !empty($_POST['snf']) && !empty($_POST['clr']) && !empty($_POST['rate']) && !empty($_POST['total']) && !empty($_POST['member_phone_input']) &&  !empty($_POST['time_slot']))
             {
 
                 // echo '<pre>';
-                // print_r();
+                // print_r( $_POST['time_slot']);
                 // exit();    
                 $phone = $_POST['member_phone_input'];
                 $bill_id  = $_POST['bill_id'];
@@ -96,8 +97,12 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
 
                     $sms_total = "₹ " . $total;
                     $date = new DateTime($created_time);
-                    $sms_date = $date->format('D d-M-Y');
-                    $sms_time = $date->format('h:i:s A');
+                    $sms_date = formatMarathiDate($date->format('D d-M-Y'));;
+                    $sms_time = formatMarathiTime($created_time);
+                    $liter = convertToMarathiNumber($liter);
+                    $fat = convertToMarathiNumber($fat);
+                    $rate = convertToMarathiNumber($rate);
+                    $sms_total = convertToMarathiNumber($sms_total);
                     // exit;
                     $message = "*आपले दूध संकलन तपशील*\n";
                     $message .= "\nदिनांक :- $sms_date";
@@ -135,7 +140,10 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                 } else {
                     echo "<script>alert('Sorry try again later')</script>";
                 }
+            }else{
+                echo "<script>alert('Enter all required fields')</script>";
             }
+        }
 
 
             ?>
@@ -147,11 +155,48 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                     const input2 = Number(document.getElementById("fat").value);
                     const input3 = Number(document.getElementById("rate").value);
 
-                    // Calculate total
-                    const total = (input1 * input2 * input3).toFixed(2);;
+                  
+                    if(input1!="" && input2!="" && input3!=""){
 
-                    // Update total input value
-                    document.getElementById("total").value = total;
+                        // Calculate total
+                        const total = (input1 * input2 * input3).toFixed(2);;
+                        
+                        // Update total input value
+                        document.getElementById("total").value = total;
+                    }
+                }
+
+                function get_rate(){
+                    const input2 = Number(document.getElementById("fat").value);
+                    if(input2!=""){
+                        $.ajax({
+                                url: "get_member_ids.php",
+                                method: "GET",
+                                data: {
+                                    searchRate: input2
+                                },
+                                success: function(data) {
+                                    // response(data);
+                                    // response(data.name);
+                                    console.log(data);
+                                    // let selectedID = $('#member_name_input').val;
+                                    // for (let key in data.name)
+                                    // console.log(data.name[selectedID]);
+                                    $('#rate').val(data);
+                                    calculateTotal();
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    console.error(errorThrown);
+                                }
+                            });
+                           
+
+                    }else{
+
+                    
+                           
+                        }
+
                 }
 
                 $(document).ready(function() {
@@ -185,6 +230,8 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                             return false;
                         }
                     });
+
+                    
 
                 });
 
@@ -272,7 +319,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                             <div class="col-sm"><input type="tel" class="form-control" onkeyup="calculateTotal()" name="liter" id="liter" placeholder="4" required></div>
                         </div>
                         <div class="col-auto" style="display: inline-flex;"><label for="inputPassword2" class="me-3 align-self-center text-primary">Fat</label>
-                            <div class="col-sm"><input type="tel" class="form-control" name="fat" id="fat" placeholder="6.7" onkeyup="calculateTotal()" required></div>
+                            <div class="col-sm"><input type="tel" class="form-control" name="fat" id="fat" placeholder="6.7" onkeyup="get_rate()"  required></div>
                         </div>
                         <div class="col-auto" style="display: inline-flex;"><label for="inputPassword2" class="me-3 align-self-center text-primary">SNF</label>
                             <div class="col-sm"><input type="tel" class="form-control" name="snf" placeholder="16" required></div>
@@ -283,7 +330,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                             <div class="col-sm"><input type="tel" class="form-control" name="clr" placeholder="4" required></div>
                         </div>
                         <div class="col-auto" style="display: inline-flex;"><label for="inputPassword2" class="me-3 align-self-center text-primary">Rate</label>
-                            <div class="col-sm"><input type="text" id="rate" class="form-control" name="rate" value="6.7" readonly></div>
+                            <div class="col-sm"><input type="tel" id="rate" class="form-control" name="rate"  readonly></div>
                         </div>
                         <div class="col-auto" style="display: inline-flex;"><label for="inputPassword2" class="me-3 align-self-center text-primary">Total</label>
                             <div class="col-sm"><input type="text" id="total" class="form-control" name="total" placeholder="0" value="" readonly></div>

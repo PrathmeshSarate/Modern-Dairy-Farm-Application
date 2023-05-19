@@ -128,7 +128,7 @@ if (isset($_POST['save_data']))
                     <div class="row g-3 mb-5 d-flex justify-content-around">
                         <div class="col-md-6" style="display: inline-flex;"><label for="inputPassword2"
                                 class="me-3 align-self-center text-primary" >Rate</label>
-                            <div class="col-sm"><input type="text"  class="form-control" id="rate" name="rate" value="30"
+                            <div class="col-sm"><input type="text"  class="form-control" id="rate" name="rate" value="66"
                                     readonly></div>
                         </div>
                         <div class="col-md-6" style="display: inline-flex;"><label for="inputPassword2"

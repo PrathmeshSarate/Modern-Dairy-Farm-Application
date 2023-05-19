@@ -1,5 +1,5 @@
 <?php include('check.php');define("TITLE", "Receipt"); 
-session_start(); 
+
 
 if(!isset($_SESSION['name']))
 {

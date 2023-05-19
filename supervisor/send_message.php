@@ -40,7 +40,7 @@ function sendMessage($senderId, $receiverId, $subject, $content) {
 
 
 
-exit();
+// exit();
 
 
 
