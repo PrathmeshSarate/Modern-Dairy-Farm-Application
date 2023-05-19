@@ -51,41 +51,25 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
             </div>
 
             <?php
-            if (isset($_GET['deactivate_id'])) {
-                $id = $_GET['deactivate_id'];
 
-                $sql = "DELETE from `rate` WHERE `id` = $id";
-                $result = mysqli_query($conn, $sql);
-                // echo '<pre>';
-                // print_r($sql);
-                // exit();
+            // if (isset($_POST['monthBtn'])) {
+            //     $selectedDate  = $_POST['selectedDate'];
+            //     $endDate  = $_POST['endDate'];
+            //     // $created_time  = $_POST['created_time'];
 
-                if ($result == 1) {
-                    echo "<script>alert('Deleted successfully');</script>";
-                } else {
-                    echo "<script>alert('Sorry try again later')</script>";
-                }
-                echo "<script>window.location.href='http://localhost/mega_php/supervisor/fat_rate.php'</script>";
-            }
+            //     $sql = "INSERT INTO `rate`(`fat`, `rate`,`created_at`) VALUES  
+            //     ('$fat','$rate','$created_time')";
+            //     $result = mysqli_query($conn, $sql);
+            //     // echo '<pre>';
+            //     // print_r($sql);
+            //     // exit();
 
-            if (isset($_POST['monthBtn'])) {
-                $selectedDate  = $_POST['selectedDate'];
-                $endDate  = $_POST['endDate'];
-                // $created_time  = $_POST['created_time'];
-
-                $sql = "INSERT INTO `rate`(`fat`, `rate`,`created_at`) VALUES  
-                ('$fat','$rate','$created_time')";
-                $result = mysqli_query($conn, $sql);
-                // echo '<pre>';
-                // print_r($sql);
-                // exit();
-
-                if ($result == 1) {
-                    echo "<script>alert('Saved successfully');</script>";
-                } else {
-                    echo "<script>alert('Sorry try again later')</script>";
-                }
-            }
+            //     if ($result == 1) {
+            //         echo "<script>alert('Saved successfully');</script>";
+            //     } else {
+            //         echo "<script>alert('Sorry try again later')</script>";
+            //     }
+            // }
 
             ?>
 
@@ -103,7 +87,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
 
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="day">
-                            <form id="dayForm" action="print.php" method="POST">
+                            <form id="dayForm" action="print.php" method="POST" target="_blank">
                                 <div class="row mb-3">
                                     <div class="col-md-12">
                                         <label for="selectedDate">Select Date:</label>
@@ -118,7 +102,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                             </form>
                         </div>
                         <div class="tab-pane fade" id="month">
-                            <form id="monthForm" action="print.php" method="POST">
+                            <form id="monthForm" action="print.php" method="POST" target="_blank">
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="startDate">Start Date:</label>

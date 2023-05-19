@@ -46,12 +46,6 @@
 					<span class="text">Direct Sell</span>
 				</a>
 			</li>
-			<li class=" <?php if(TITLE=="Fat-Rate"){echo "active";} ?>">
-				<a href="fat_rate.php">
-					<i class='bx bx-money'></i>
-					<span class="text">Fat-Rate</span>
-				</a>
-			</li>
 			<li class=" <?php if(TITLE=="Receipt"){echo "active";} ?>">
 				<a href="receipt.php">
 					<i class='bx bx-receipt'></i>

@@ -63,7 +63,7 @@ if(!isset($_SESSION['name']))
                     <div class="container-fluid pb-5">
                         <div class="d-flex justify-content-center">
                             <div class="col-md-4">
-                                <form action="blank.php" method="post">
+                                <form action="blank.php" method="post" target="_blank">
                                 <h4 class="py-4 text-center">Selcet date for Recipt <span class="badge bg-dark ms-2 text-white">DAY</span> </h4>
                                 
                                 <div class="row">
@@ -71,7 +71,7 @@ if(!isset($_SESSION['name']))
                                         <input id="startDate" name="startDate" onclick="select_day()" class="form-control" type="date">
                                     </div>
                                     <div class="col-auto " style="display: inherit;">
-                                        <input type="submit" id="getReceipt" class="btn btn-dark" name="getReceipt" value="Get Receipt" >
+                                        <input type="submit" id="dayBtn" class="btn btn-dark" name="dayBtn" value="Get Receipt" >
                                      </div>
                                 </div>
 
@@ -82,13 +82,16 @@ if(!isset($_SESSION['name']))
                     <hr class="border-2 border-dark">
                     <div class="container-fluid">
                         <div class="d-flex justify-content-center">
-                            <form class=" text-center justify-content-center ">
+                            <form class=" text-center justify-content-center" action="blank.php"  target="_blank" method="POST">
                                 <div class="row g-3 justify-content-center">
                                     <h4 class="py-4 ">Selcet date for Recipt <span class="badge text-white bg-primary ms-2">Month</span></h4>
                                 </div>  
                                 <div class="row">
-                                    <div class="col-auto " style="display: inherit;"><label for="staticEmail2" class="d-inline px-4 align-self-center">From :</label><input id="startDate" class="form-control" type="date"></div>
-                                    <div class="col-auto " style="display: inherit;"><label for="staticEmail2" class="d-inline px-4 align-self-center">To :</label><input id="startDate" class="form-control" type="date"></div>
+                                    <div class="col-auto " style="display: inherit;"><label for="staticEmail2" class="d-inline px-4 align-self-center">From :</label><input id="startDate" name="startDate" class="form-control" type="date"></div>
+                                    <div class="col-auto " style="display: inherit;"><label for="staticEmail2" class="d-inline px-4 align-self-center">To :</label><input id="endDate" name="endDate" class="form-control" type="date"></div>
+                                    <div class="col-auto " style="display: inherit;">
+                                        <input type="submit" id="dayBtn" class="btn btn-success" name="monthBtn" value="Get Receipt" >
+                                     </div>
                                 </div>
                             </form>
                         </div>

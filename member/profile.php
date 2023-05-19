@@ -1,13 +1,4 @@
-<?php include('check.php');define("TITLE", "Profile"); 
-session_start(); 
-$member_id= $_SESSION['username'];
-if(!isset($_SESSION['name']))
-{
-    echo '<script> alert("WARNING : Please Login !!!"); window.location.href="../login.php"</script>';
-    // header("Location:../login.php");
-
-}
-?>
+<?php include('check.php');define("TITLE", "Profile"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,9 +16,11 @@ if(!isset($_SESSION['name']))
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -49,6 +42,7 @@ if(!isset($_SESSION['name']))
 
                 <?php require 'include/topbar.php'; ?>
 <?php 
+    
 	$sql = "SELECT * FROM `member` WHERE `member_id`= '$member_id'";
 	$result = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -68,11 +62,10 @@ if(!isset($_SESSION['name']))
         // print_r($sql_update);
         // exit();
         if ($result_update == 1) {
-            echo "<script>alert('Updated.'); 
-                // var myurl = 'http://localhost/mega_php/member/profile.php';</script>";
+            echo "<script>alert('Updated.'); window.location.href= 'http://localhost/mega_php/member/profile.php';</script>";
         } else {
             echo "<script>alert('Sorry try again later.'); 
-                var myurl = 'http://localhost/mega_php/member/profile.php';</script>";
+            window.location.href = 'http://localhost/mega_php/member/profile.php';</script>";
         }
     }
 ?>
@@ -97,7 +90,7 @@ if(!isset($_SESSION['name']))
                             </div>
                             <div class="form-group">
                             <label for="inputAddress">Address</label>
-                                    <textarea class="form-control" id="address" rows="3" name="address" placeholder="Near Chitranagari,Kangalgav,Kolhapur" value="<?php if(isset($row['address'])){ echo $row['address'];}?>"> <?php if(isset($row['address'])){ echo $row['address'];}?></textarea>
+                                    <textarea class="form-control" id="address" rows="3" name="address" placeholder="Near Chitranagari,Kangalgav,Kolhapur" value="<?php if(isset($row['address'])){ echo $row['address'];}?>"><?php if(isset($row['address'])){ echo $row['address'];}?></textarea>
                             </div>
                             <button type="submit" name="update_data" class="btn btn-primary">Update</button>
                         </form>
@@ -117,8 +110,8 @@ if(!isset($_SESSION['name']))
 
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>

@@ -13,7 +13,7 @@
 	<!-- My CSS -->
 	<link rel="stylesheet" href="style.css">
 
-	<title>Supervisor | <?php if (TITLE !== "") {
+	<title>Owner | <?php if (TITLE !== "") {
 							echo TITLE;
 						} ?>
 	</title>
@@ -34,7 +34,7 @@
                     } ?></h1>
 				</div>
 				<ul class="breadcrumb">
-					<a href="#">Supervisor</a>
+					<a href="#">Owner</a>
 					<span class="text-primary ps-2 pe-2">></span>
 					<a class="active" href="#"><?php if (TITLE !== "") {echo TITLE;} ?></a>					
 				</ul>
@@ -145,51 +145,7 @@
 				}
 				?>
 
-				<div class="order">
-				<div class="head">
-					<h3 class="text-primary">Today Collection</h3> <?php echo "<span class='badge' style='background-color:#3C91E6'>".$count_of_done."</span>";echo "<span class='badge' style='background-color:#FD7238'>".$count_of_notdone."</span>"; ?>
-				</div>
-				<table>
-					<thead>
-						<tr>
-							<th>Member ID</th>
-							<th>Member Name</th>
-							<th>Animal Type</th>
-							<th>Liter`s</th>
-							<th>Time</th>
-							<th>Status</th>
-						</tr>
-					</thead>
-					<tbody>
-							<?php
-							$today_date = date("Y-m-d");
-							$sql_member_fetch = "SELECT m.name, m.member_id, mc.liter, mc.animal_category AS animal_type,mc.created_date as time  FROM member AS m LEFT JOIN milk_collection AS mc ON m.member_id = mc.member_id AND DATE(mc.created_date) = CURDATE() WHERE m.is_active = 1 ORDER BY mc.created_date DESC";
 
-							$result_member_fetch = mysqli_query($conn, $sql_member_fetch);
-								while ($row_member_fetch = mysqli_fetch_assoc($result_member_fetch) ) {
-									$time = $row_member_fetch['time'];
-									$formattedTime = date('g:i A', strtotime($time));
-								// echo '<pre>';
-								// print_r($member_fetch);
-							?>
-						<tr>
-							<td>
-								<p><?php echo $row_member_fetch['member_id']; ?></p>
-							</td>
-							<td>
-								<p><?php echo $row_member_fetch['name']; ?></p>
-							</td>
-							<td><?php if($row_member_fetch['animal_type']!=''){ echo $row_member_fetch['animal_type']; }else{ echo "-";}?></td>
-							<td><?php if($row_member_fetch['liter']!=''){ echo $row_member_fetch['liter']; }else{ echo "-";}?></td>
-							<td><?php if($row_member_fetch['time']!=''){ echo $formattedTime; }else{ echo "-";}?>
-							</td>
-							<td><?php if($row_member_fetch['liter']!=''){ echo "<span class='status completed'>Completed</span>"; }else{ echo "<span class='status pending'>Pending</span>";}?>
-							</td>
-						</tr>
-					<?php } ?>
-					</tbody>
-				</table>
-				</div>
 			</div>
 		</main>
 		<!-- MAIN -->

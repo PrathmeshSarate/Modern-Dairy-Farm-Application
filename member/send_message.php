@@ -4,7 +4,7 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the form data
     $senderId = $_SESSION['username'];
-    $receiverId = $_POST["member_id"];
+    $receiverId = $_POST["supervisor_id_input"];
     $subject = $_POST["subject"];
     $content = $_POST["content1"];
 
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Process the message sending logic
     if (sendMessage($senderId, $receiverId, $subject, $content)) {
         // Message sent successfully
-        echo "<script>alert('Message sent successfully!');window.location.href='http://localhost/mega_php/supervisor/message.php'</script>";
+        echo "<script>alert('Message sent successfully!');window.location.href='http://localhost/mega_php/member/message.php'</script>";
     } else {
         // Error sending the message
         echo "Error sending the message.";
@@ -26,7 +26,9 @@ function sendMessage($senderId, $receiverId, $subject, $content) {
     include("../connection.php");
     $sql = "INSERT INTO message (sender_id, receiver_id, subject, content, timestamp, is_read, is_deleted) 
             VALUES ('$senderId', '$receiverId', '$subject', '$content', NOW(), 0, 0)";
-
+        // echo '<pre>';
+        // print_r($sql);
+        // exit();
     // Execute the query
     if (mysqli_query($conn, $sql)) {
         return true; // Message sent successfully
@@ -35,5 +37,8 @@ function sendMessage($senderId, $receiverId, $subject, $content) {
     }
     return true; // Replace this with your actual implementation
 }
+
+
+
 
 ?>

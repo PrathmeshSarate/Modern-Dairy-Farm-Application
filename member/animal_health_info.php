@@ -1,12 +1,5 @@
 <?php include('check.php');define("TITLE", "Animal Health info"); 
-session_start(); 
 
-if(!isset($_SESSION['name']))
-{
-    echo '<script> alert("WARNING : Please Login !!!"); window.location.href="../login.php"</script>';
-    // header("Location:../login.php");
-
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,8 +19,8 @@ if(!isset($_SESSION['name']))
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -63,16 +56,22 @@ if(!isset($_SESSION['name']))
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="mt-4 p-5 bg-danger text-white rounded">
+                                
+                                
                                 <h4 class="py-3"><u><?php echo $row_ahi['d_title']; ?></u> </h4>
-                                <span class="badge bg-primary"><?php echo $row_ahi['created_at']; ?></span>
                                 <p><?php echo $row_ahi['d_description']; ?></p>
+                                <div class="text-end">
+                                    <span class="text-end badge bg-primary"><?php echo $row_ahi['created_at']; ?></span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="mt-4 p-5 bg-success text-white rounded">
                                 <h4 class="py-3"><u><?php echo $row_ahi['t_title']; ?></u></h4>
-                                <span class="badge bg-primary"><?php echo $row_ahi['created_at']; ?></span>
                                 <p><?php echo $row_ahi['t_description']; ?></p>
+                                <div class="text-end">
+                                    <span class="badge bg-primary"><?php echo $row_ahi['created_at']; ?></span>
+                                </div>
                             </div>
                         </div>
                     </div>

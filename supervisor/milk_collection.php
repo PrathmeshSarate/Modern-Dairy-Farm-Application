@@ -60,14 +60,14 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
             } else if ($current_time_min >= "16:00" && $current_time_min <= "19:00") {
                 $time_slot = "evening";
             } else {
-                // $time_slot = "-";
-                $time_slot = "morning";
+                $time_slot = "-";
+                // $time_slot = "morning";
             }
 
 
 
         if (isset($_POST['save_data'])){
-            if(!empty($_POST['member_id']) && !empty($_POST['animal_type']) && !empty($_POST['liter']) && !empty($_POST['fat']) && !empty($_POST['snf']) && !empty($_POST['clr']) && !empty($_POST['rate']) && !empty($_POST['total']) && !empty($_POST['member_phone_input']) &&  !empty($_POST['time_slot']))
+            if(!empty($_POST['member_id']) && !empty($_POST['member_name_input']) && !empty($_POST['animal_type']) && !empty($_POST['liter']) && !empty($_POST['fat']) && !empty($_POST['snf']) && !empty($_POST['clr']) && !empty($_POST['rate']) && !empty($_POST['total']) && !empty($_POST['member_phone_input']) &&  !empty($_POST['time_slot']))
             {
 
                 // echo '<pre>';
@@ -77,6 +77,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                 $bill_id  = $_POST['bill_id'];
                 $time_slot  = $_POST['time_slot'];
                 $member_id  = $_POST['member_id'];
+                $member_name  = $_POST['member_name_input'];
                 $supervisor_id  = $_SESSION['username'];
                 $animal_type  = $_POST['animal_type'];
                 $liter  = $_POST['liter'];
@@ -87,7 +88,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                 $total  = $_POST['total'];
                 $created_time  = $_POST['created_time'];
 
-                $sql = "INSERT INTO `milk_collection`(`bil_id`, `member_id`, `supervisor_id`, `time_slot`, `animal_category`, `liter`, `fat`, `snf`, `clr`, `rate`, `total`, `created_date`) VALUES ('$bill_id','$member_id','$supervisor_id','$time_slot','$animal_type','$liter','$fat','$snf','$clr','$rate','$total','$created_time')";
+                $sql = "INSERT INTO `milk_collection`(`bil_id`, `member_id`,`member_name`, `supervisor_id`, `time_slot`, `animal_category`, `liter`, `fat`, `snf`, `clr`, `rate`, `total`, `created_date`) VALUES ('$bill_id','$member_id','$member_name','$supervisor_id','$time_slot','$animal_type','$liter','$fat','$snf','$clr','$rate','$total','$created_time')";
                 $result = mysqli_query($conn, $sql);
                 // echo '<pre>';
                 // print_r($result);
@@ -133,6 +134,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                     $result = json_decode($response, true);
 
                     // do something with response
+                    if(isset($result)){
                     if ($result['status'] == 200) {
                         echo "<script>alert('SMS sent successfully');</script>";
                     }
@@ -140,6 +142,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                 } else {
                     echo "<script>alert('Sorry try again later')</script>";
                 }
+            }
             }else{
                 echo "<script>alert('Enter all required fields')</script>";
             }
@@ -285,7 +288,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)) . $time_stamp_for_bill_
                             </div>
                             <div class="col-auto">
                                 <div class="">
-                                    <h5 for="exampleFormControlInput1" class="form-label text-primary">Time Slot : <span class="text-dark"><?php echo $time_slot; ?></span></h5>
+                                    <h5 for="exampleFormControlInput1" class="form-label text-primary">Time Slot : <span class="text-dark"><?php echo ucwords($time_slot); ?></span></h5>
                                 </div>
                             </div>
                             

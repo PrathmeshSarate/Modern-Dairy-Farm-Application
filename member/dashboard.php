@@ -50,16 +50,16 @@ $member_id =$_SESSION['username'];
 
 <?php
             date_default_timezone_set('Asia/Kolkata');
-            $current_timestamp = date('Y-m-d H:i:s');
+            $current_timestamp = date('Y-m-d');
 
             // $sql_q_for_total_member = "SELECT COUNT(member_id) as count_m FROM member where member_id = '$member_id'";
             $sql_q_cow_liter_month = "SELECT SUM(`liter` * 1) as cow_liter_month FROM milk_collection WHERE member_id='$member_id' AND animal_category='cow' AND created_date BETWEEN '2023-05-01 00:00:01' AND '2023-05-30 21:59:59'";
 
             $sql_q_buffalo_liter_month = "SELECT SUM(`liter` * 1) as buffalo_liter_month FROM milk_collection WHERE member_id='$member_id' AND animal_category='buffalo' AND created_date BETWEEN '2023-05-01 00:00:01' AND '2023-05-30 21:59:59'";
 
-            $sql_q_cow_liter_day = "SELECT sum(`liter` * 1) as cow_liter_day FROM `milk_collection` WHERE `member_id`='$member_id' AND `created_date`= '$current_timestamp' AND `animal_category`='cow'";
+           $sql_q_cow_liter_day = "SELECT sum(`liter` * 1) as cow_liter_day FROM `milk_collection` WHERE  `member_id`='$member_id' AND `animal_category`='cow' AND `created_date` between '$current_timestamp 00:00:00' AND'$current_timestamp 23:59:59'";
 
-            $sql_q_buffalo_liter_day = "SELECT sum(`liter` * 1) as buffalo_liter_day FROM `milk_collection` WHERE `member_id`='$member_id' AND `created_date`= '$current_timestamp' AND `animal_category`='buffalo'";
+            $sql_q_buffalo_liter_day = "SELECT sum(`liter` * 1) as buffalo_liter_day FROM `milk_collection` WHERE `member_id`='$member_id'  AND `animal_category`='buffalo' AND `created_date`  between '$current_timestamp 00:00:00' AND '$current_timestamp 23:59:59'  ";
             
 
             $result_cow_liter_month = mysqli_query($conn, $sql_q_cow_liter_month);
@@ -120,7 +120,7 @@ $member_id =$_SESSION['username'];
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Cow Milk supplying</div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php if($buffalo_liter_month!=""){ echo $cow_liter_day;}{ echo "-";}  ?> Liter's</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php if($cow_liter_day!=""){ echo $cow_liter_day;}else{ echo "-";}  ?> Liter's</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@ $member_id =$_SESSION['username'];
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Buffalo Milk supplying</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php if($buffalo_liter_month!=""){ echo $buffalo_liter_day;}{ echo "-";}  ?> Liter's</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php if($buffalo_liter_month!=""){ echo $buffalo_liter_day;}else{ echo "-";}  ?> Liter's</div>
                                         </div>
                                         <div class="col-auto"><span class="badge text-white bg-dark p-2">Day</span></div>
                                     </div>
@@ -195,29 +195,8 @@ $member_id =$_SESSION['username'];
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -233,8 +212,123 @@ $member_id =$_SESSION['username'];
     <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
+    <!-- <script src="js/demo/chart-area-demo.js"></script> -->.
 
+    <script>
+        // Set new default font family and font color to mimic Bootstrap's default styling
+        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#858796';
+
+        function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function(n, prec) {
+            var k = Math.pow(10, prec);
+            return '' + Math.round(n * k) / k;
+            };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
+        }
+        // Retrieve data from the database and format it for the chart
+        <?php
+            // Assuming you have a MySQL connection established
+            $query = "SELECT * FROM `milk_collection` WHERE `member_id` = '$member_id' AND animal_category = 'cow'";
+            $result = mysqli_query($conn, $query);
+
+            $labels = [];
+            $data = array_fill(0, 12, 0);
+            
+            while ($row = mysqli_fetch_assoc($result)) {
+                // $labels[] = date("M", strtotime($row['created_date']));
+                $month = date("m", strtotime($row['created_date']));
+                $data[] = (int) $row['liter'];
+                $data[$month - 1] = (int) $row['liter'];
+            }
+        ?>
+
+        // Chart.js code with dynamic data
+        var ctx = document.getElementById("myAreaChart");
+        var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+            label: "Liters",
+            lineTension: 0.3,
+            backgroundColor: "rgba(78, 115, 223, 0.05)",
+            borderColor: "rgba(78, 115, 223, 1)",
+            pointRadius: 3,
+            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointBorderColor: "rgba(78, 115, 223, 1)",
+            pointHoverRadius: 3,
+            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+            pointHitRadius: 10,
+            pointBorderWidth: 2,
+            data: <?php echo json_encode($data); ?>,
+            }],
+        },
+        options: {
+            // Chart options...
+        }
+        });
+            <?php
+                // Assuming you have a MySQL connection established
+                $query = "SELECT * FROM `milk_collection` WHERE `member_id` = '$member_id' AND animal_category = 'buffalo'";
+                $result = mysqli_query($conn, $query);
+
+                $labels = [];
+                $data = array_fill(0, 12, 0);
+                
+                while ($row = mysqli_fetch_assoc($result)) {
+                    // $labels[] = date("M", strtotime($row['created_date']));
+                    $month = date("m", strtotime($row['created_date']));
+                    // $data[] = (int) $row['liter'];
+                    $data[$month - 1] = (int) $row['liter'];
+                }
+            ?>
+
+        // Chart.js code with dynamic data
+        var ctx = document.getElementById("myAreaChart2");
+        var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+            label: "Liters",
+            lineTension: 0.3,
+            backgroundColor: "rgba(78, 115, 223, 0.05)",
+            borderColor: "rgba(78, 115, 223, 1)",
+            pointRadius: 3,
+            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointBorderColor: "rgba(78, 115, 223, 1)",
+            pointHoverRadius: 3,
+            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+            pointHitRadius: 10,
+            pointBorderWidth: 2,
+            data: <?php echo json_encode($data); ?>,
+            }],
+        },
+        options: {
+            // Chart options...
+        }
+        });
+  </script>
 </body>
 
 </html>

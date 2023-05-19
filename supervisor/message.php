@@ -11,10 +11,10 @@ define("TITLE", "Message"); ?>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <!-- My CSS -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="./assets/css/jquery-ui.css">
-
-    <script src="./assets/js/jquery.min.js"></script>
-    <script src="./assets/js/jquery-ui.js"></script>
+    <link rel="stylesheet" href="../assets/css/jquery-ui.css">
+    
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/jquery-ui.js"></script>
     <title>Supervisor | <?php if (TITLE !== "") {
                             echo TITLE;
                         } ?>
@@ -87,95 +87,95 @@ define("TITLE", "Message"); ?>
                 });
             </script>
 
-<script>
-    $(document).ready(function() {
-        // Listen for modal show event
-        
-        $('.modal').on("hidden.bs.modal", function () {
+            <script>
+                $(document).ready(function() {
+                    // Listen for modal show event
+                    
+                    $('.modal').on("hidden.bs.modal", function () {
 
-            window.location.reload();
+                        window.location.reload();
 
-        } );
-        $('.modal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var messageId = button.data('message-id');
-            // console.log(messageId);
-            // Send AJAX request to update is_read field
-            $.ajax({
-                url: 'update_message.php',
-                type: 'POST',
-                data: { messageId: messageId },
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error updating is_read field:', error);
+                    } );
+                    $('.modal').on('show.bs.modal', function(event) {
+                        var button = $(event.relatedTarget);
+                        var messageId = button.data('message-id');
+                        // console.log(messageId);
+                        // Send AJAX request to update is_read field
+                        $.ajax({
+                            url: 'update_message.php',
+                            type: 'POST',
+                            data: { messageId: messageId },
+                            success: function(response) {
+                                console.log(response);
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error updating is_read field:', error);
+                            }
+                        });
+                    });
+                });
+            </script>
+
+            <?php
+                // Function to fetch messages from the database
+                function getReadMessages() {
+                    include("../connection.php");
+
+                    // Query to fetch messages with sender and receiver information
+                    $query = "SELECT m.message_id, m.subject, m.content, m.timestamp, 
+                    r.name AS sender_name, s.name AS receiver_name
+                    FROM message AS m
+                    INNER JOIN supervisor AS s ON m.receiver_id = s.supervisor_id
+                    INNER JOIN member AS r ON m.sender_id = r.member_id
+                    WHERE m.is_read=1
+                    ORDER BY m.timestamp DESC";
+
+                    // Execute the query
+                    $result = mysqli_query($conn, $query);
+
+                    // Fetch all rows as an associative array
+                    $messages = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+                    // Free result set
+                    mysqli_free_result($result);
+
+                    // Close the connection
+                    mysqli_close($conn);
+
+                    return $messages;
                 }
-            });
-        });
-    });
-</script>
+                // Function to fetch messages from the database
+                function getMessages() {
+                    include("../connection.php");
 
-<?php
-// Function to fetch messages from the database
-function getReadMessages() {
-    include("../connection.php");
+                    // Query to fetch messages with sender and receiver information
+                    $query = "SELECT m.message_id, m.subject, m.content, m.timestamp, 
+                    r.name AS sender_name, s.name AS receiver_name
+                    FROM message AS m
+                    INNER JOIN supervisor AS s ON m.receiver_id = s.supervisor_id
+                    INNER JOIN member AS r ON m.sender_id = r.member_id
+                    WHERE m.is_read=0
+                    ORDER BY m.timestamp DESC";
 
-    // Query to fetch messages with sender and receiver information
-    $query = "SELECT m.message_id, m.subject, m.content, m.timestamp, 
-    s.name AS sender_name, r.name AS receiver_name
-    FROM message AS m
-    INNER JOIN supervisor AS s ON m.sender_id = s.supervisor_id
-    INNER JOIN member AS r ON m.receiver_id = r.member_id
-    WHERE m.is_read=1
-    ORDER BY m.timestamp DESC";
+                    // Execute the query
+                    $result = mysqli_query($conn, $query);
 
-    // Execute the query
-    $result = mysqli_query($conn, $query);
+                    // Fetch all rows as an associative array
+                    $messages = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    // Fetch all rows as an associative array
-    $messages = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                    // Free result set
+                    mysqli_free_result($result);
 
-    // Free result set
-    mysqli_free_result($result);
+                    // Close the connection
+                    mysqli_close($conn);
 
-    // Close the connection
-    mysqli_close($conn);
+                    return $messages;
+                }
 
-    return $messages;
-}
-// Function to fetch messages from the database
-function getMessages() {
-    include("../connection.php");
-
-    // Query to fetch messages with sender and receiver information
-    $query = "SELECT m.message_id, m.subject, m.content, m.timestamp, 
-    s.name AS sender_name, r.name AS receiver_name
-    FROM message AS m
-    INNER JOIN supervisor AS s ON m.sender_id = s.supervisor_id
-    INNER JOIN member AS r ON m.receiver_id = r.member_id
-    WHERE m.is_read=0
-    ORDER BY m.timestamp DESC";
-
-    // Execute the query
-    $result = mysqli_query($conn, $query);
-
-    // Fetch all rows as an associative array
-    $messages = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-    // Free result set
-    mysqli_free_result($result);
-
-    // Close the connection
-    mysqli_close($conn);
-
-    return $messages;
-}
-
-// Retrieve messages from the database
-$messages = getMessages();
-$readmessages = getReadMessages();
-?>
+                // Retrieve messages from the database
+                $messages = getMessages();
+                $readmessages = getReadMessages();
+            ?>
 
             <div style="width: 100%; text-align:left" class="table-data">
                 <div class="container-fluid">

@@ -66,7 +66,7 @@ $genrate_bill_id = strtoupper(substr(md5(rand()), 0, 4)).$time_stamp_for_bill_id
                 } else {
                     echo "<script>alert('Sorry try again later')</script>";
                 }
-                echo "<script>window.location.href='http://localhost/mega_php/supervisor/fat_rate.php'</script>";
+                echo "<script>window.location.href='http://localhost/mega_php/owner/fat_rate.php'</script>";
 
          }   
             
@@ -165,7 +165,7 @@ if (isset($_POST['save_data']))
                                             <p><?php echo $row['rate']; ?></p>
                                         </td>
                                         <td>                                           
-                                            <a class="float-start btn btn-danger text-white  " href="http://localhost/mega_php/supervisor/fat_rate.php?deactivate_id=<?php echo $row['id']; ?>">
+                                            <a class="float-start btn btn-danger text-white  " href="http://localhost/mega_php/owner/fat_rate.php?deactivate_id=<?php echo $row['id']; ?>">
                                                 <i class='bx bx-trash'></i>
                                             </a>
                                         </td>

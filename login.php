@@ -38,8 +38,23 @@ if(isset($_POST['submit'])){
             // echo $_SESSION["userType".$username];
 		}
 		else{
-			echo '<script> alert("Login failed")</script>';
-		}
+            $sql = "SELECT  * FROM `owner` WHERE `username` = '$username' AND `password` = '$password'";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            $count = mysqli_num_rows($result);
+            if($count>=1){
+                echo '<script> alert("Welcome")</script>';
+                header("Location:owner/dashboard.php");
+                session_start();
+                $_SESSION['username'] = $username;
+                $_SESSION['name'] = $row['name'];
+                $_SESSION["userType".$username] = "owner";
+                // echo $_SESSION["userType".$username];
+            }
+            else{
+                echo '<script> alert("Login failed")</script>';
+            }
+        }
 	}
 }
 ?>
